@@ -9,6 +9,7 @@ faiss-cpu
 pypdf
 pymupdf
 rapidocr-onnxruntime
+opencv-python-headless
 numpy
 python-dotenv
 langsmith
