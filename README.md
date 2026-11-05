@@ -2,6 +2,10 @@
 
 **Ask questions about your PDFs and see where the answers came from.** Provenance is a document question-answering app built with retrieval-augmented generation (RAG). It extracts text from PDFs, uses OCR for scanned pages, retrieves relevant passages, and answers using the document context with page citations.
 
+## Live demo
+
+Try Provenance: <https://provenance08.streamlit.app/>
+
 ## Features
 
 - **PDF chat:** upload a PDF in the Streamlit app or select a PDF saved in `data/`.
