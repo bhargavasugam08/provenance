@@ -1,13 +1,20 @@
 """OCR fallback for scanned / image-only PDF pages (no system install needed)."""
+import logging
+
 import numpy as np
 
+logger = logging.getLogger(__name__)
 _ENGINE = None
 
 
 def _fitz():
     try:
         import pymupdf as fitz   # newer PyMuPDF
-    except ImportError:
+    except ModuleNotFoundError as e:
+        # Only fall back for older PyMuPDF versions where the module is named
+        # ``fitz``. Don't hide a missing dependency imported *by* PyMuPDF.
+        if e.name != "pymupdf":
+            raise
         import fitz              # older PyMuPDF
     return fitz
 
@@ -35,9 +42,17 @@ def ocr_pages(pdf_path: str, page_indexes) -> dict:
         fitz = _fitz()
         engine = _get_engine()
     except ImportError as e:
+        # Keep the traceback in the host's runtime logs. The previous generic
+        # message made missing packages indistinguishable from broken imports
+        # inside an installed OCR dependency.
+        logger.exception("OCR initialization failed")
+        missing_module = getattr(e, "name", None)
+        detail = f" Missing module: {missing_module}." if missing_module else f" {e}"
         raise ValueError(
-            "This PDF has pages with no text (scanned images) and the OCR packages are "
-            "missing. Run: pip install pymupdf rapidocr-onnxruntime"
+            "This PDF has scanned pages, but OCR could not be initialized. "
+            "Check the deployment runtime logs for the import traceback and "
+            "verify that pymupdf and rapidocr-onnxruntime are installed."
+            f"{detail}"
         ) from e
 
     out = {}
