@@ -51,7 +51,7 @@ def ocr_pages(pdf_path: str, page_indexes) -> dict:
         raise ValueError(
             "This PDF has scanned pages, but OCR could not be initialized. "
             "Check the deployment runtime logs for the import traceback and "
-            "verify that pymupdf and rapidocr-onnxruntime are installed."
+            "verify that pymupdf, rapidocr-onnxruntime, and opencv-python-headless are installed."
             f"{detail}"
         ) from e
 
