@@ -1,0 +1,10 @@
+services:
+  rag:
+    build: .
+    ports:
+      - "8501:8501"
+    env_file: .env            # GROQ_API_KEY, LANGSMITH_API_KEY, ...
+    volumes:
+      - ./data:/app/data          # your PDFs
+      - ./.indices:/app/.indices  # cached indexes survive restarts
+    restart: unless-stopped

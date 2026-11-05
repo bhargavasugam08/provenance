@@ -1,0 +1,15 @@
+langchain>=0.3
+langchain-core
+langchain-community
+langchain-groq
+langchain-huggingface
+langchain-text-splitters
+sentence-transformers
+faiss-cpu
+pypdf
+pymupdf
+rapidocr-onnxruntime
+numpy
+python-dotenv
+langsmith
+streamlit

@@ -1,0 +1,7 @@
+.env
+.indices/
+__pycache__/
+venv/
+.venv*/
+data/*.pdf
+.hf_cache/

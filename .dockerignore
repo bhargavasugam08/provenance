@@ -1,0 +1,9 @@
+.env
+.git
+.indices
+data/*.pdf
+venv
+.venv*
+__pycache__
+*.pyc
+.hf_cache
