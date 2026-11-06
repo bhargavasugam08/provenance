@@ -1,0 +1,413 @@
+﻿id,question,golden_answer,golden_pages,retrieved_pages,retrieval_hit,answer,verdict,reason
+1,What is the difference between supervised and unsupervised learning?,"Supervised: each observation has predictors and a response, and the goal is to predict or understand the response. Unsupervised: only inputs and no response; the goal is to find structure such as clusters.",41 43,41 43 388 389,True,"Supervised learning deals with data sets that contain both **predictor (input) measurements** \(x_i\) **and an associated response (output) measurement** \(y_i\). The goal is to fit a model that relates the predictors to the response so that we can **predict the response for new observations** or **understand the predictor‑response relationship** (e.g., linear regression, logistic regression, support‑vector machines)【p. 41】.  
+
+Unsupervised learning, by contrast, works with data that have **only predictor measurements and no response variable**. Because there is no explicit outcome to predict, the analysis is usually **exploratory**: we look for structure such as clusters or low‑dimensional representations (e.g., PCA, clustering). The objectives are more subjective and there is no standard way to assess model quality (no cross‑validation based on a response)【p. 389】【p. 388】.  
+
+In short, supervised learning predicts a known outcome; unsupervised learning seeks patterns in data without a known outcome.",CORRECT,"The answer includes all key points from the reference (predictors+response vs only inputs, prediction/understanding vs finding structure) and adds accurate, non‑contradictory detail."
+2,What is the difference between prediction and inference in statistical learning?,"Prediction estimates Y for new X, treating f as a black box and caring about accuracy. Inference tries to understand how Y is affected by each predictor, so the form of f matters.",34 35 36,10 35 41,True,"In statistical learning the two main goals are **prediction** and **inference**, and they differ in what the analyst wants to get out of the fitted model.
+
+* **Prediction** – The aim is to obtain a model that can **accurately forecast the response for new, future observations**.  The focus is on the overall predictive performance, not on interpreting how each predictor works.  For example, a company may use demographic variables to predict who will respond to a mailing, caring only about the accuracy of those predictions (p. 35).
+
+* **Inference** – The aim is to **understand the underlying relationship between the response and the predictors**.  Here the analyst is interested in how individual variables affect the outcome, such as which media contribute to sales or how a change in price influences purchase probability (p. 35).  The goal is to draw conclusions about the effect of each predictor rather than just to predict new cases (p. 41).
+
+Thus, prediction emphasizes **future‑point accuracy**, while inference emphasizes **interpretability and insight into the data‑generating process**.",CORRECT,"The model answer captures the distinction that prediction focuses on accurate forecasts for new data using a black‑box approach, while inference seeks to understand how each predictor influences the response, matching the reference."
+3,What is irreducible error?,"The error term epsilon, which cannot be predicted from X, so it cannot be reduced by estimating f better; it sets an upper bound on prediction accuracy.",33 34,33 34 47,True,"Irreducible error is the portion of the prediction error that comes from the random noise term ε in the model \(Y = f(X)+\varepsilon\).  Even if we could estimate the true function \(f\) perfectly (so that \(\hat Y = f(X)\)), the response \(Y\) would still vary because of ε, which by definition cannot be predicted from the observed predictors \(X\).  Consequently this error cannot be reduced by any choice of statistical‑learning method; it sets an unavoidable lower bound on how accurate our predictions can be (often expressed as \(\operatorname{Var}(\varepsilon)\))【p. 33】【p. 34】.",CORRECT,"The model answer accurately describes ε as unpredictable noise that cannot be reduced by better estimating f, matching the reference."
+4,What are the three components of the expected test MSE?,"The variance of the estimate f-hat, its squared bias, and the variance of the error term (irreducible error).",50,48 49 50,True,"The expected test mean‑squared error can be broken down into **three fundamental components**:
+
+1. **Variance of the fitted function** \(\operatorname{Var}\bigl(\hat f(x_0)\bigr)\) – how much the estimate \(\hat f\) would vary if we repeatedly drew training sets.  
+2. **Squared bias of the fitted function** \([\operatorname{Bias}\bigl(\hat f(x_0)\bigr)]^{2}\) – the systematic error between the average prediction and the true regression function \(f(x_0)\).  
+3. **Irreducible error** \(\operatorname{Var}(\varepsilon)\) – the variance of the random noise term in the data‑generating process.
+
+These three terms sum to the expected test MSE (Equation 2.7)【p. 49】. The accompanying discussion and illustration of these components appear on page 50【p. 50】.",CORRECT,"The model answer lists variance of the estimate, squared bias, and irreducible error, matching the reference."
+5,What is the bias-variance trade-off?,"Higher flexibility lowers bias but raises variance. Test error depends on both, so the best method balances them, giving a U-shaped test MSE curve.",51 52,50 51 274,True,"The bias‑variance trade‑off refers to the fact that a statistical learning method cannot simultaneously make both its **bias** (the error from approximating the true relationship) and its **variance** (the error from sensitivity to the particular training data) arbitrarily small.  
+
+- A very flexible model can **reduce bias** dramatically, but this usually comes at the cost of **increasing variance** because the model fits the random noise in the training set.  
+- Conversely, a very simple (rigid) model has **low variance**—its predictions change little from one training set to another—but it often suffers from **high bias** because it cannot capture the true pattern in the data.  
+
+The goal is to choose a level of model flexibility that balances these two sources of error so that the **expected test‑set mean‑squared error (MSE)** is minimized. In other words, we seek a method with both low squared bias and low variance (the “sweet spot” of the trade‑off) rather than one that is extreme in either direction (e.g., a curve that passes through every training point → low bias, high variance; or a horizontal line → low variance, high bias)【p. 51】.  
+
+The trade‑off is illustrated by how bias typically **decreases** as flexibility increases, while **variance increases**; the optimal test MSE occurs where the decrease in bias just outweighs the increase in variance, after which further flexibility harms performance【p. 50】.  
+
+Thus, the bias‑variance trade‑off is the fundamental tension between making a model flexible enough to capture the true signal (low bias) while keeping it stable enough not to over‑react to random fluctuations in the data (low variance).",CORRECT,"The answer accurately describes that increasing flexibility reduces bias but raises variance and that the optimal method balances them to minimize test error, matching the reference."
+6,How do training MSE and test MSE change as model flexibility increases?,"Training MSE keeps decreasing, while test MSE first falls and then rises (U shape) because very flexible models overfit.",45 46 47,48 51 255,False,"As the flexibility of a model is increased, the **training‑set mean‑squared error (MSE) falls steadily** – it never goes up again (it decreases monotonically) because a more flexible model can always fit the training data at least as well as a less flexible one.  
+
+In contrast, the **test‑set MSE follows a U‑shaped curve**. When flexibility is low, the test MSE is relatively high because the model is too simple (high bias). As flexibility grows, the test MSE drops, reaching a minimum at some intermediate level of flexibility. Beyond that point, further flexibility causes the test MSE to rise again due to increasing variance (over‑fitting)【p. 48】.  
+
+Thus:
+
+| Flexibility ↑ | Training MSE | Test MSE |
+|---------------|--------------|----------|
+| Low → High    | Decreases monotonically | Decreases at first, then increases (U‑shape) |
+
+This pattern is illustrated in Figures 2.9–2.11 and discussed in the text on page 48.",CORRECT,"The answer accurately states that training MSE continuously decreases with flexibility, while test MSE follows a U‑shaped pattern, decreasing then increasing."
+7,What does the Bayes classifier do?,"It assigns each observation to the class with the highest conditional probability Pr(Y=j | X=x0), giving the lowest possible test error rate.",52 53,53 155 161,True,"The Bayes classifier assigns each new observation to the class that has the highest posterior probability given the predictor values. In other words, it predicts the class for which  
+
+\[
+\Pr(Y=j\mid X=x)
+\]
+
+is largest (i.e., the class with the greatest posterior probability). Its decision rule is defined by the **Bayes decision boundary**: an observation falling on one side of that boundary is assigned to one class, and on the other side to the other class. Because it always chooses the most probable class, the Bayes classifier attains the lowest possible test‑error rate, known as the **Bayes error rate** (p. 53, p. 161).",CORRECT,The model answer correctly states that the Bayes classifier assigns observations to the class with the highest conditional (posterior) probability and notes it achieves the lowest possible test error rate.
+8,What is the Bayes error rate?,"The error rate of the Bayes classifier, which is the lowest possible test error rate; it is analogous to the irreducible error.",53 54,52 53 161 162,True,"The **Bayes error rate** is the lowest possible test‑error that any classifier can achieve.  
+It is the error made by the Bayes classifier, which always assigns an observation to the class with the highest posterior probability \( \Pr(Y=j\mid X) \).  
+
+For a particular predictor value \(x_0\) the error is  
+
+\[
+\text{error at }X=x_0 = 1-\max_j \Pr(Y=j\mid X=x_0),
+\]
+
+and the overall Bayes error rate is the expectation of this quantity over the distribution of \(X\):
+
+\[
+\boxed{\text{Bayes error rate}= 1-\; \mathbb{E}\!\left[\,\max_j \Pr(Y=j\mid X)\,\right]}
+\qquad\text{(p. 53)}.
+\]
+
+Thus it represents the minimum achievable average mis‑classification probability for the problem. (See also the discussion of the Bayes classifier on p. 52.)",CORRECT,The answer correctly states that the Bayes error rate is the lowest possible test error (the error of the Bayes classifier) and adds appropriate detail without contradiction.
+9,How does the K-nearest neighbors classifier work?,"It finds the K training points closest to x0, estimates each class probability as the fraction of those neighbors in that class, and picks the class with the highest probability.",54,54 55 142,True,"The K‑nearest neighbors (K‑NN) classifier works by using the *K* closest training observations to a new (test) point *x₀* to decide its class:
+
+1. **Choose a positive integer *K*.**  
+2. **Find the *K* training points that are nearest to *x₀*** (using a distance metric such as Euclidean). These points form the neighborhood *N₀* (p. 54).  
+3. **Estimate the conditional class probabilities** for each possible class *j* by the proportion of neighbors that belong to that class:  
+
+\[
+\Pr(Y=j \mid X=x₀)=\frac{1}{K}\sum_{i\in N₀} I(y_i=j)
+\]
+
+where *I* is an indicator that equals 1 if the *i*‑th neighbor’s response *y_i* is *j* (p. 54).  
+4. **Apply Bayes’ rule** (i.e., pick the class with the largest estimated probability) and assign *x₀* to that class (p. 54).  
+
+The method is illustrated in Figure 2.14: for a test point (black cross) the three nearest points (when *K* = 3) are identified, and the test point is classified as the majority class among those neighbors (blue in the example) (p. 55).  
+
+Thus, K‑NN classifies a new observation by “voting” among its *K* nearest training neighbors.",CORRECT,"The model answer accurately describes finding the K nearest points, estimating class probabilities as the fraction of neighbors in each class, and selecting the class with the highest probability."
+10,What is the difference between parametric and non-parametric methods?,"Parametric methods assume a functional form for f and estimate a fixed set of parameters. Non-parametric methods make no explicit assumption about the form of f, are more flexible, but need many more observations.",36 37 38 39,36 38 119 121,True,"Parametric and non‑parametric methods differ mainly in how they treat the unknown function \(f\).
+
+* **Parametric methods** assume a specific functional form for \(f\) (e.g., a linear model \(f(X)=\beta_0+\beta_1X_1+\dots+\beta_pX_p\)).  This reduces the problem to estimating a relatively small set of parameters, which makes the model easy to interpret and to test, but it can perform poorly if the assumed form is far from the true relationship (p. 36, p. 119).
+
+* **Non‑parametric methods** make essentially no assumption about the shape of \(f\); they let the data determine the form of the estimate (e.g., thin‑plate splines, K‑nearest‑neighbors regression).  Because they do not compress the problem into a few parameters, they are more flexible and can capture complex relationships, but they typically require many more observations to achieve accurate estimates and can have higher variance (p. 38, p. 119, p. 121).",CORRECT,"accurately captures that parametric methods assume a functional form and estimate a fixed set of parameters, while non‑parametric methods make no explicit form assumption, are more flexible, and need many more observations."
+11,What is the residual sum of squares (RSS)?,"The sum of squared differences between observed and fitted responses, RSS = sum of (y_i - y_hat_i)^2; least squares minimizes it.",77,77 84 135,True,"The residual sum of squares (RSS) is the total of the squared differences between the observed responses and the values predicted by the regression model.  If \(e_i = y_i-\hat y_i\) denotes the residual for observation \(i\) (the error between the actual \(y_i\) and the fitted value \(\hat y_i = \hat\beta_0+\hat\beta_1 x_i\)), then  
+
+\[
+\text{RSS}=e_1^{2}+e_2^{2}+\dots+e_n^{2}
+          =\sum_{i=1}^{n}(y_i-\hat\beta_0-\hat\beta_1 x_i)^{2}.
+\]
+
+This quantity is what the least‑squares method minimizes when estimating the regression coefficients (see p. 77).  It is also restated in the later section on residual standard error (see p. 84).",CORRECT,The answer correctly defines RSS as the sum of squared differences between observed and fitted values and notes that least squares minimizes it.
+12,What does the R-squared statistic measure?,"The proportion of variability in the response that is explained by the regression, between 0 and 1.",83 84 85,44 85,True,"The R‑squared ( R² ) statistic quantifies how much of the total variability in the response variable Y is accounted for by the regression on the predictor X.  It is defined as  
+
+\[
+R^{2}=1-\frac{\text{RSS}}{\text{TSS}}=\frac{\text{TSS}-\text{RSS}}{\text{TSS}},
+\]
+
+where **TSS** (total sum of squares) measures the overall variance in Y before fitting the model, and **RSS** (residual sum of squares) measures the variance that remains unexplained after the regression.  Thus, R² represents the proportion of the variability in Y that can be explained by the regression on X (p. 85).",CORRECT,"The model answer correctly states that R‑squared measures the proportion of response variability explained by the regression, matching the reference."
+13,What is the F-statistic used for in multiple linear regression?,It tests whether at least one predictor is related to the response (null hypothesis: all coefficients are zero).,90 91 92,91 92 93,True,"The F‑statistic in a multiple‑linear‑regression analysis is the **overall test of significance for the set of predictors**.  
+
+* First you compute the F‑statistic (and its p‑value) to decide whether **at least one of the explanatory variables is related to the response**; the null hypothesis is that all regression coefficients are zero (no relationship) and the alternative is that at least one coefficient is non‑zero (p. 93).  
+* The statistic is formed from the ratio of the reduction in residual sum of squares when the full model is fitted versus a model with no predictors, scaled by the appropriate degrees of freedom. When the null hypothesis is true the F‑statistic is expected to be close to 1, whereas values far larger than 1 indicate that the model explains more variation than would be expected by chance (p. 91).  
+* The same F‑statistic formula can also be used for **partial (nested‑model) tests**, comparing a full model to a reduced model that omits a subset of variables; the resulting “partial F‑test” tells you whether the omitted variables improve the fit (p. 92).  
+
+So, in multiple linear regression the F‑statistic is used to test the overall significance of the regression model (and, by extension, to test whether groups of predictors add explanatory power).",CORRECT,"The model answer correctly states that the F‑statistic tests whether at least one predictor is related to the response, with the null hypothesis that all coefficients are zero, and adds accurate extra detail."
+14,What is the variance inflation factor and when is it a problem?,"VIF measures collinearity of a predictor with the others. The smallest value is 1, and a VIF above about 5 or 10 indicates problematic collinearity.",116,110 116 282 397,True,"The variance inflation factor (VIF) is a diagnostic that measures how much the variance of an estimated regression coefficient \( \hat\beta_j \) is increased because that predictor is correlated with the other predictors in the model.  Formally, it is the ratio  
+
+\[
+\text{VIF}_j=\frac{\operatorname{Var}(\hat\beta_j\ \text{from the full model})}{\operatorname{Var}(\hat\beta_j\ \text{if fitted alone})}.
+\]
+
+A VIF of 1 means the predictor is orthogonal to all others (no collinearity).  In practice a small amount of collinearity is common, but as a rule of thumb a VIF exceeding **5** (or more conservatively **10**) signals a problematic level of multicollinearity that can inflate standard errors and destabilize coefficient estimates (p. 116).",CORRECT,"The answer includes the definition, notes the minimum of 1, and correctly states that VIFs above about 5 or 10 indicate problematic collinearity."
+15,What is an interaction term in linear regression?,A product of predictors (X1*X2) added to the model so the effect of one predictor depends on the value of another (synergy).,96 97,102 119 130 137,False,"An interaction term is a predictor that is created by multiplying two (or more) original variables so that the effect of one variable on the response can depend on the value of the other.  
+
+In the standard additive model  
+
+\[
+Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \varepsilon ,
+\]
+
+the coefficient β₁ represents the same change in Y for a one‑unit increase in X₁ regardless of the value of X₂. By adding an interaction term \(X_1X_2\) we obtain  
+
+\[
+Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_1X_2 + \varepsilon \quad\text{(p. 102)}.
+\]
+
+This term allows the slope for X₁ to vary with X₂ (or vice‑versa), relaxing the additive assumption. In R the syntax `lstat*age` expands to `lstat + age + lstat:age`, where `lstat:age` is the interaction term (p. 130).  
+
+So, an interaction term in linear regression is the product of two predictors that captures the joint (non‑additive) effect of those predictors on the response.",CORRECT,"The answer correctly defines an interaction term as the product of predictors that lets one predictor’s effect depend on another, matching the reference."
+16,How are qualitative predictors with two levels included in a regression model?,By creating a dummy variable that is 1 for one level and 0 for the other and using it as a predictor.,99 100,99 100 145 221,True,"Qualitative (categorical) predictors that have only two levels are incorporated by turning the factor into a single 0/1 indicator (dummy) variable.  
+For each observation you set  
+
+\[
+x_i=\begin{cases}
+1 & \text{if the person belongs to one level (e.g., female)}\\[4pt]
+0 & \text{if the person belongs to the other level (e.g., male)}
+\end{cases}
+\]
+
+and then include this dummy variable as a regular predictor in the linear regression model. In the Credit data example, the gender variable is coded this way, yielding a term \( \beta_1 \times \text{gender[Female]} \) in the model (p. 99).",CORRECT,"The answer correctly explains using a 0/1 dummy variable for the two-level qualitative predictor, matching the reference."
+17,What is heteroscedasticity and how can it show up?,Non-constant variance of the error terms. It shows up as a funnel shape in the residual plot; transforming the response with log or square root can help.,110 111,109 110 111,True,"Heteroscedasticity is the condition in a regression model where the error terms do **not** have a constant variance (i.e., Var(εᵢ) ≠ σ²).  In other words, the spread of the residuals changes across the range of the fitted values or the response variable (p. 110).
+
+The most common way it becomes apparent is through the **residual plot**.  When heteroscedasticity is present the residuals often form a “funnel” shape: the magnitude of the residuals tends to increase (or decrease) as the fitted values get larger, so the spread widens (or narrows) across the plot (p. 110).  This pattern can be seen in the left‑hand panel of Figure 3.11, where the residuals fan out as the fitted values grow, indicating heteroscedasticity (p. 110‑111).",CORRECT,"correctly states non‑constant error variance and the funnel‑shaped residual plot, matching the reference answer."
+18,What is the difference between an outlier and a high leverage point?,"An outlier has an unusual response y_i given x_i, while a high leverage point has an unusual predictor value x_i.",112 113 114,112 113,True,"In the text the two concepts are defined separately:
+
+* **Outlier** – an observation whose *response* \(y_i\) is unusually large or small **relative to its predictor value** \(x_i\).  In practice an outlier is flagged when its studentized residual exceeds a threshold (e.g., \(|\text{studentized residual}|>3\)) (p. 112‑113).
+
+* **High‑leverage point** – an observation whose *predictor* value \(x_i\) (or, in multiple regression, the vector of predictors) is far from the bulk of the other predictor values.  Such points have a large leverage statistic \(h_i\) because \(x_i\) is distant from the mean \(\bar x\) (p. 112‑113).  A high‑leverage point may or may not have a large residual; it can influence the fitted regression line simply by its extreme \(x\) location.
+
+Thus, the key difference is that an outlier is unusual in the **response** given the predictor(s), whereas a high‑leverage point is unusual in the **predictor(s)** themselves. Both can affect the regression fit, but they do so for different reasons. (See p. 112‑113.)",CORRECT,"The model answer accurately states that outliers are unusual in the response given the predictor, while high-leverage points are unusual in the predictor values, matching the reference."
+19,Why is linear regression generally not appropriate for a qualitative response with more than two classes?,"Coding classes as numbers implies an ordering and equal spacing that usually does not exist, so different codings give different models.",144 145 146 147,43 142 144 145,True,"Linear regression assumes that the response variable is quantitative and models it with a single continuous outcome. When the response is qualitative (categorical) with more than two possible classes, the usual “dummy‑variable” trick that works for a binary outcome cannot be extended in a straightforward way. Because the model cannot naturally represent several unordered categories or produce sensible class‑probability estimates, a linear‑regression fit would give meaningless predictions. For these reasons it is preferable to use a classification method that is designed for qualitative responses (e.g., logistic regression for two classes, multinomial models or other classifiers for more than two) rather than linear regression (p. 145).  
+
+The text also notes that linear regression is generally used with quantitative responses, while logistic regression is used for binary qualitative responses, underscoring the mismatch between linear regression and categorical outcomes (p. 43).",CORRECT,"the model answer captures the core issue that treating categorical classes as numeric imposes ordering/equal spacing (which doesn’t exist) and thus linear regression is unsuitable for multi‑class qualitative responses, adding compatible extra detail."
+20,What does the logistic function do in logistic regression?,"It models p(X) = e^(b0+b1X) / (1 + e^(b0+b1X)), which always stays between 0 and 1, so it gives valid probabilities.",147,147 148 171 172,True,"The logistic function is used to turn the linear predictor β₀ + β₁X (or, in a multivariate case, β₀ + β₁X₁ + … + βpXp) into a valid probability.  It maps any real‑valued input to a value between 0 and 1:
+
+\[
+p(X)=\frac{e^{\beta_0+\beta_1X}}{1+e^{\beta_0+\beta_1X}} .
+\]
+
+Because this function always yields outputs in the interval [0, 1] and has an S‑shaped (sigmoidal) curve, it prevents the model from predicting probabilities below 0 or above 1, regardless of the value of X.  In logistic regression the logistic function therefore provides the link between the linear combination of predictors and the estimated probability of the binary outcome (p. 147‑148).",CORRECT,"The answer includes the same formula and explains that the logistic function maps any input to a probability between 0 and 1, matching the reference."
+21,What are odds and log-odds (logit) in logistic regression?,"Odds are p(X)/(1-p(X)); the log of the odds is the logit, which is linear in X in the logistic model.",147,147 172 306,True,"In logistic regression the **odds** of an event are defined as the ratio of its probability to the probability of the opposite outcome:
+
+\[
+\text{odds}= \frac{p(X)}{1-p(X)} .
+\]
+
+Because \(p(X)\) lies between 0 and 1, the odds range from 0 (very unlikely) to \(+\infty\) (almost certain) (p. 147).
+
+Taking the natural logarithm of the odds gives the **log‑odds** (also called the **logit**):
+
+\[
+\text{log‑odds (logit)} = \log\!\left(\frac{p(X)}{1-p(X)}\right) .
+\]
+
+The log‑odds is the quantity that appears on the left‑hand side of the logistic model and is modeled as a linear function of the predictors:
+
+\[
+\log\!\left(\frac{p(X)}{1-p(X)}\right)=\beta_0+\beta_1 X \quad\text{(p. 147)} .
+\]
+
+Thus, in a logistic regression:
+
+* **Odds** measure how many times more likely the event is than not, expressed as a ratio \(p/(1-p)\).
+* **Log‑odds (logit)** are the natural log of that ratio; they are the scale on which the regression coefficients act linearly, so a one‑unit increase in \(X\) changes the log‑odds by \(\beta_1\) (or multiplies the odds by \(e^{\beta_1}\)) (p. 147).",CORRECT,"The answer correctly states odds = p/(1‑p), defines log‑odds (logit) as its natural log, and notes it is modeled linearly in X."
+22,What assumptions does linear discriminant analysis make?,Observations in each class come from a Gaussian distribution with a class-specific mean and a covariance (variance) common to all classes.,154 155 156 157 158,164 176 363,False,"Linear discriminant analysis (LDA) is built on two key statistical assumptions:
+
+1. **Multivariate Gaussian (normal) distribution within each class** – the observations belonging to any given class are assumed to be drawn from a multivariate normal distribution with its own mean vector.  
+2. **Common covariance matrix across all classes** – the covariance matrix of the features is assumed to be the same for every class (i.e., the class‑specific distributions share a common Σ).  
+
+These assumptions lead to a linear decision rule because the class‑conditional densities have identical quadratic terms that cancel out, leaving only linear terms in the discriminant function.  
+
+*(Source: p. 164)*",CORRECT,"The model answer correctly states that each class follows a Gaussian distribution with its own mean and that all classes share a common covariance matrix, matching the reference."
+23,What are sensitivity and specificity?,Sensitivity is the percentage of true positives correctly identified; specificity is the percentage of true negatives correctly identified.,162 163,33 160,False,"Sensitivity and specificity are class‑specific performance measures used to evaluate a classifier or screening test.
+
+* **Sensitivity** (also called the true‑positive rate) is the proportion of actual positive cases that are correctly identified by the model. In the credit‑card example, it is the percentage of true defaulters that are flagged as defaulters (24.3 % in the cited case) (p. 160).
+
+* **Specificity** (also called the true‑negative rate) is the proportion of actual negative cases that are correctly identified. In the same example, it is the percentage of non‑defaulters that are correctly classified as non‑defaulters (computed as \(1 - 23/9{,}667 = 99.8\%\)) (p. 160).",CORRECT,"The model answer correctly defines sensitivity as the proportion of true positives identified and specificity as the proportion of true negatives identified, matching the reference."
+24,What is an ROC curve and what does the AUC summarize?,"The ROC curve plots true positive rate against false positive rate across thresholds; the area under it (AUC) summarizes overall performance, higher is better.",163 164,162 369 380,False,"An **ROC (receiver‑operating‑characteristics) curve** is a graphical display that shows how a classifier’s two error rates—its true‑positive rate (sensitivity) and false‑positive rate (1 – specificity)—vary as the decision threshold is changed.  By plotting the false‑positive rate on the horizontal axis and the true‑positive rate on the vertical axis for every possible threshold, the ROC curve lets you see the trade‑off between the two types of errors for a given model (p. 162).
+
+The **area under the ROC curve (AUC)** provides a single summary measure of that overall performance.  It is the integral of the ROC curve across all thresholds; a larger AUC indicates a better classifier.  An AUC of 1.0 corresponds to a perfect classifier, while an AUC of 0.5 corresponds to a classifier that performs no better than random chance (p. 162).",CORRECT,"The answer accurately describes the ROC curve as TPR vs FPR across thresholds and explains that AUC summarizes overall performance, with higher values indicating better classifiers."
+25,How does quadratic discriminant analysis differ from LDA?,"QDA lets each class have its own covariance matrix, giving a quadratic boundary; it is more flexible, so LDA is better with few training observations and QDA with many.",164 165 166,164 165 176,True,"Quadratic discriminant analysis (QDA) differs from linear discriminant analysis (LDA) in two main ways:
+
+1. **Covariance‑matrix assumption** – LDA assumes that all classes share a single covariance matrix, whereas QDA allows each class to have its own covariance matrix \( \Sigma_k \) (p. 164).
+
+2. **Form of the decision boundary** – Because the class‑specific covariances lead to a discriminant function that includes a quadratic term in \(x\), the QDA decision boundary is quadratic, while LDA’s boundary is linear (p. 164‑165). Consequently, QDA can better approximate a true quadratic Bayes boundary (e.g., when class covariances differ markedly), whereas LDA may be preferable when the common‑covariance assumption holds and a linear boundary is adequate.",INCORRECT,missing the reference’s key point about LDA being preferable with few training observations and QDA with many.
+26,What are the drawbacks of the validation set approach?,"The test error estimate can be highly variable depending on the split, and it tends to overestimate test error because fewer observations are used for training.",193 194,191 192 193 194,True,"The document lists two main drawbacks of the validation‑set approach:
+
+1. **Reduced training data** – Because only the observations that end up in the training set are used to fit the model, the model is built on fewer data points than if the whole data set were used. Statistical methods usually perform worse with smaller training samples, so the validation‑set error tends to **over‑estimate the true test error** for a model that would be fit on the full data set. (p. 193)
+
+2. **Random‑split variability** – The validation‑set error depends on how the data are randomly split into training and validation sets. Different random splits can give different error estimates, so the result is **unstable and can vary from one run to another**. (p. 194)
+
+These are the two potential drawbacks mentioned in the text.",CORRECT,"It correctly identifies both the variability due to random splits and the tendency to overestimate test error because of reduced training data, matching the reference."
+27,What is leave-one-out cross-validation?,Each observation is used once as the validation set while the model is fit on the other n-1; the n errors are averaged.,193 194 195,193 196 228,True,Leave‑One‑Out Cross‑Validation (LOOCV) is a form of cross‑validation in which each observation in the data set is left out in turn as a validation set while the model is trained on all the remaining \(n-1\) observations. The procedure is repeated \(n\) times—once for each observation—and the resulting error estimates are averaged to give an overall estimate of test error. LOOCV can be viewed as the special case of \(k\)-fold cross‑validation where \(k=n\) (p. 196) and is introduced as a refinement of the simple validation‑set approach to address its drawbacks (p. 193).,CORRECT,"The model answer accurately describes LOOCV as using each observation once as validation, training on the remaining n‑1, repeating n times, and averaging the errors, matching the reference."
+28,What is k-fold cross-validation and what values of k are typically used?,"Split the data into k folds, hold out each fold once while fitting on the rest, and average the k errors. Typically k = 5 or 10.",196 197,196 213,True,"**k‑fold cross‑validation** is a resampling method used to estimate the test error of a statistical‑learning model. The data set of \(n\) observations is randomly divided into \(k\) roughly equal‑sized groups (or “folds”). For each of the \(k\) iterations, one fold is held out as a validation set, the model is fitted on the remaining \(k\!-\!1\) folds, and the mean‑squared error (or other loss) is computed on the held‑out fold. The \(k\) error estimates are then averaged to give the overall cross‑validation estimate  
+
+\[
+\text{CV}(k)=\frac{1}{k}\sum_{i=1}^{k}\text{MSE}_i .
+\]  
+
+(See p. 196.)
+
+In practice, the most common choices for the number of folds are **\(k = 5\)** or **\(k = 10\)**. These values provide a good trade‑off between bias (as in leave‑one‑out CV, where \(k=n\)) and computational cost (fewer model fits than LOOCV) (p. 196).",CORRECT,The answer accurately describes k‑fold cross‑validation and correctly states the typical values k = 5 or 10.
+29,How does the bias-variance trade-off apply to choosing k in k-fold cross-validation?,k-fold CV with k = 5 or 10 often gives more accurate test error estimates than LOOCV because LOOCV has higher variance; k-fold accepts a little bias for lower variance.,198 199 200,196 198 199 213,True,"The bias‑variance trade‑off comes into play when we decide how many folds \(k\) to use in k‑fold cross‑validation.
+
+* **Bias:**  
+  *When \(k\) is large (e.g., LOOCV with \(k=n\)), each training set contains almost all of the observations, so the resulting error estimate is **nearly unbiased** for the true test error* (p. 198).  
+  *When \(k\) is smaller (e.g., \(k=5\) or \(k=10\)), each training set is noticeably smaller than the full data set, so the error estimate becomes **slightly biased upward** (it tends to over‑estimate the test error) (p. 198‑199).
+
+* **Variance:**  
+  *Because the LOOCV training sets overlap almost completely, the individual error estimates from each fold are highly correlated, giving LOOCV a **higher variance** in its overall error estimate* (p. 199).  
+  *With fewer, larger folds (smaller \(k\)), the training sets are less correlated, so the average of the fold‑wise errors has **lower variance** (p. 199).
+
+**Resulting trade‑off:**  
+Choosing \(k\) involves balancing the low bias of large \(k\) against the high variance that comes with it. Conversely, a smaller \(k\) reduces variance but introduces a bit more bias. Empirical studies have found that moderate values such as \(k=5\) or \(k=10\) give a good compromise—providing test‑error estimates that are not overly biased and not overly variable (p. 199).",CORRECT,"The answer correctly states that LOOCV has higher variance and lower bias, while k=5 or 10 reduces variance at the cost of a small bias, matching the reference."
+30,What is the bootstrap used for?,To quantify the uncertainty of an estimator or method by repeatedly sampling with replacement from the original data.,202 203 204,202 209 331,True,"The bootstrap is a resampling technique that is used to **quantify the uncertainty associated with an estimator or a statistical‑learning method**.  In the text it is applied for several purposes:
+
+* To estimate the **standard errors** (or other measures of variability) of a statistic of interest—e.g., the coefficients from a linear regression fit (p. 202).  
+* To **assess the accuracy** of a statistic or model (such as the linear‑regression model on the Auto data set) by repeatedly sampling the data with replacement and recomputing the statistic (p. 209).  
+* To **improve statistical‑learning methods** that have high variance, such as decision trees, by using bootstrap aggregation (bagging) to reduce that variance (p. 331).
+
+Thus, the bootstrap is employed whenever we need an empirical way to evaluate the variability or reliability of an estimator, especially in situations where analytic formulas are difficult or unavailable.",CORRECT,"The model answer correctly states that the bootstrap quantifies uncertainty of an estimator by resampling, matching the reference and adds consistent extra detail."
+31,How does best subset selection work?,"Fit every possible model for each number of predictors, pick the best of each size, then choose among sizes using cross-validation, Cp, AIC, BIC or adjusted R^2.",220 221,220 222 223,True,"Best‑subset selection tries every possible combination of the p predictors and then picks the model that performs best according to some criterion (e.g., lowest residual sum of squares, AIC, BIC, cross‑validated error).
+
+The procedure is usually carried out in two stages (Algorithm 6.1):
+
+1. **Start with the null model** \(M_{0}\) that contains no predictors and simply predicts the sample mean.  
+2. **For each model size k = 1,2,…,p**  
+   * Fit **all** \(\binom{p}{k}\) least‑squares regressions that contain exactly k predictors.  
+   * Among those \(\binom{p}{k}\) models, keep the one that gives the best fit (e.g., smallest RSS).  
+
+After this first stage you have the “best” model of each size k. In the second stage you compare these p candidate models (one for each k) and select the overall best one according to your chosen selection metric (e.g., lowest BIC). This yields the final best‑subset model (p. 220).
+
+Because the number of possible models grows as \(2^{p}\) (there are \(\binom{p}{k}\) models for each k), the method quickly becomes computationally infeasible when p exceeds about 40, even with fast computers (p. 222). Branch‑and‑bound shortcuts can reduce the workload but only for least‑squares linear regression and have limited scalability. Consequently, stepwise methods are often used as computationally cheaper alternatives (p. 222‑223).",CORRECT,"The model answer accurately describes fitting all combinations, selecting the best model of each size, and then choosing among sizes using criteria such as AIC, BIC, cross‑validation, etc., matching the reference."
+32,How does forward stepwise selection work?,"Start with no predictors and add one at a time, each time adding the predictor giving the greatest improvement, then pick the best model in the sequence.",222 223,222 223 225,True,"Forward stepwise selection is a greedy, computationally‑efficient way to build a regression model. It starts with an empty model (no predictors) and then proceeds iteratively:
+
+1. **At each step** it evaluates all predictors that are not yet in the model and identifies the one whose addition would give the greatest improvement in fit (e.g., the largest reduction in residual sum of squares or the biggest increase in a chosen information criterion).  
+2. **That predictor is added** to the current model.  
+3. The process repeats, adding one variable at a time, until a stopping rule is met (often when all p predictors have been entered, or when further additions no longer improve the fit) (p. 222).
+
+Because it only considers models that differ by a single variable at each step, forward stepwise examines far fewer models than best‑subset selection (which looks at all 2^p subsets). The method is fast, but it is not guaranteed to find the globally best model; for example, if the best two‑variable model does not contain the variable chosen in the first step, forward stepwise will miss it (p. 223).",CORRECT,"It correctly describes starting with no predictors, adding the one with greatest improvement each step, and stopping when no further improvement, matching the reference."
+33,Which criteria can be used to estimate test error when comparing models of different sizes?,"Cp, AIC, BIC and adjusted R^2, or direct estimates using validation or cross-validation.",226 227 228,225 228 229 263,True,"The document lists several ways to obtain an estimate of the test‑error when you are comparing models that have different numbers of predictors:
+
+* **Information‑criterion based estimates** – AIC, BIC and Mallows’ Cp (and, less theoretically motivated, adjusted \(R^{2}\)) can be computed for each model size and used to pick the model with the smallest estimated test error【p. 228】.  
+
+* **Direct validation‑set or cross‑validation estimates** – By holding out a validation set or by performing \(K\)-fold cross‑validation you can compute an estimated test‑MSE for each model and choose the one with the lowest value【p. 228】【p. 229】【p. 263】.  
+
+* **One‑standard‑error rule** – After obtaining the cross‑validation (or validation‑set) estimate of test MSE for each model size, compute its standard error and select the smallest model whose estimated test error is within one standard error of the minimum【p. 229】.
+
+Thus, the criteria mentioned for estimating test error across models of different sizes are **AIC, BIC, Cp, adjusted \(R^{2}\), validation‑set error, cross‑validation error, and the one‑standard‑error rule**.",CORRECT,"includes Cp, AIC, BIC, adjusted R² and validation/cross‑validation estimates as in the reference, with harmless extra detail."
+34,What does ridge regression do?,"It minimizes RSS plus lambda times the sum of squared coefficients, shrinking coefficients toward zero but not exactly to zero.",230 231 232,231 232 233 239,True,"Ridge regression modifies ordinary least‑squares by adding a penalty on the size of the coefficient vector.  
+It “shrinks’’ the estimated coefficients toward zero, which reduces the variability (variance) of the fitted model at the cost of introducing a small amount of bias. This bias‑variance trade‑off is especially useful when the predictors are nearly collinear, when the number of predictors \(p\) is close to (or exceeds) the number of observations \(n\), or when the ordinary‑least‑squares estimates are highly unstable. By trading a modest increase in bias for a large decrease in variance, ridge regression can produce more accurate predictions even in situations where the ordinary‑least‑squares solution is not unique (e.g., \(p>n\)) (p. 232‑233).",CORRECT,"It correctly describes ridge regression as adding a penalty on coefficient size that shrinks coefficients toward zero (without setting them exactly to zero), matching the reference."
+35,What is the key difference between the lasso and ridge regression?,"The lasso uses an L1 penalty that can set coefficients exactly to zero, so it does variable selection; ridge keeps all predictors.",234 235 236,235 238 239 240,True,"The essential distinction is how the two penalties shrink the ordinary‑least‑squares coefficients.  
+
+* **Ridge regression** shrinks every coefficient toward zero by the **same proportion**; all predictors remain in the model, merely with reduced magnitude (p. 240).  
+
+* **The lasso** shrinks each coefficient toward zero by a **constant amount** (λ/2).  Any coefficient whose absolute value is smaller than this amount is driven **exactly to zero** (soft‑thresholding), so the lasso can eliminate variables and produce a sparse, more interpretable model (p. 240; p. 235).  
+
+Thus, the key difference is that ridge regression performs uniform proportional shrinkage without variable elimination, whereas the lasso performs soft‑thresholding that can set some coefficients to zero, achieving automatic feature selection.",CORRECT,"The answer correctly states that lasso’s L1 penalty can set coefficients to zero for variable selection, while ridge’s L2 penalty shrinks coefficients but retains all predictors."
+36,What is principal components regression?,Least squares regression that uses the first M principal components as predictors; the components are found without using the response (unsupervised).,245 246 247 248,389 390 399,False,"Principal components regression (PCR) is a two‑step modeling approach. First, a principal components analysis (PCA) is performed on the set of (often highly correlated) predictor variables to obtain a smaller number of orthogonal “principal component” variables that capture most of the variability in the original data. Then, those principal components are used **as the predictors in a regression model** in place of the original, larger set of variables. In other words, PCR replaces the original correlated predictors with a reduced set of uncorrelated component scores and fits the regression on those scores (p. 389‑390).",CORRECT,"accurately describes using unsupervised principal components as predictors in a least‑squares regression, matching the reference."
+37,How does partial least squares differ from principal components regression?,"PLS is supervised: it also uses the response when finding the new features, unlike PCR.",252 253,245 248 252 389,True,"Partial‑least‑squares (PLS) and principal‑components regression (PCR) are both two‑step dimension‑reduction methods, but they choose the new predictor directions in different ways.
+
+* **PCR** first builds the principal components of the predictor matrix (the directions of maximal variance in the X‑space) and then uses the first M components as regressors in an ordinary least‑squares fit. The underlying assumption is that the directions in which the predictors vary most are also the directions that are most related to the response, even though this is not guaranteed (p. 248; p. 389).
+
+* **PLS** also creates a low‑dimensional set of linear combinations \(Z_1,\dots ,Z_M\), but it does so **supervised**: the response Y is used while constructing the components. The first PLS direction, for example, is formed from the simple‑regression coefficients of Y on each predictor, so the resulting components are chosen to explain both the predictor variation **and** their covariance with the response (p. 252; p. 245).
+
+Thus, the key difference is that PCR selects components solely on the basis of predictor variance (unsupervised), whereas PLS selects components that are explicitly tied to the response (supervised).",CORRECT,"The model answer correctly states that PLS is supervised and uses the response to construct components, unlike PCR which is unsupervised."
+38,What is a regression spline?,"A piecewise polynomial fit in regions separated by knots, constrained to join smoothly at the knots.",285 286 288,281 288 289 291,True,"A regression spline is a flexible modeling tool that divides the range of a predictor \(X\) into \(K\) distinct regions (defined by knots) and fits a polynomial of fixed degree within each region. The polynomial pieces are constrained to join smoothly at the knots—typically requiring continuity of the function and its first \(d\!-\!1\) derivatives for a degree‑\(d\) spline. By increasing the number of knots rather than the polynomial degree, regression splines can achieve a highly flexible fit while keeping the model stable (p. 281; p. 288).",CORRECT,"The answer includes the piecewise polynomial, knots, and smooth joining, matching the reference."
+39,What is a smoothing spline?,"The function that minimizes RSS plus a roughness penalty, lambda times the integral of the squared second derivative, so it fits well but stays smooth.",292 293,46 281 292 293,True,"A **smoothing spline** is a special kind of natural cubic spline that is fitted by balancing how closely it follows the data with how smooth the resulting curve is.  
+
+* It is a **piecewise‑cubic polynomial** that has knots at **every unique predictor value** \(x_1,\dots ,x_n\) in the data set.  
+* The fitted function \(g(x)\) is chosen to **minimize a penalized residual‑sum‑of‑squares** criterion (RSS plus a smoothness penalty controlled by a tuning parameter \(\lambda\)). This penalty forces the curve to be smooth, preventing it from over‑fitting the data.  
+* As a result, the smoothing spline is a **natural cubic spline**: it has continuous first and second derivatives at each knot and is linear beyond the outermost knots.  
+
+In short, a smoothing spline is a natural cubic spline with a knot at each data point, obtained by minimizing a residual‑sum‑of‑squares subject to a smoothness penalty (see p. 292‑293; also summarized on p. 281).",CORRECT,"The answer correctly states that a smoothing spline minimizes a penalized RSS (RSS plus a smoothness/roughness penalty), matching the reference."
+40,What are generalized additive models (GAMs)?,An extension of multiple linear regression that allows non-linear functions of each predictor while keeping the model additive.,297 298,297 298 301,True,"Generalized additive models (GAMs) are an extension of the standard linear model that allows each predictor to influence the response through its own smooth, possibly non‑linear function while still keeping the overall model additive. In a GAM the expected response is written as  
+
+\[
+y_i = \beta_0 + f_1(x_{i1}) + f_2(x_{i2}) + \dots + f_p(x_{ip}) + \varepsilon_i,
+\]
+
+where each \(f_j(\cdot)\) is a smooth function estimated from the data (e.g., with splines or local regression) rather than a single linear coefficient \(\beta_j\) (p. 298, 7.7.1). This framework can be applied to both quantitative and qualitative responses, providing a flexible yet interpretable alternative to fully non‑parametric methods (p. 297). The model is called “additive” because the contributions of the individual predictor functions are summed together (p. 298).  
+
+Key points from the text:  
+
+* GAMs extend multiple linear regression by replacing each linear term \(\beta_j x_{ij}\) with a smooth function \(f_j(x_{ij})\) (p. 298).  
+* They maintain additivity, allowing separate estimation of each \(f_j\) and then summing them (p. 298).  
+* GAMs can be used for regression (quantitative response) and classification (qualitative response) problems (p. 297‑301).  
+
+Thus, a GAM is a flexible, additive modeling approach that captures non‑linear relationships between predictors and the response while preserving the interpretability of additive effects.",CORRECT,"The answer accurately describes GAMs as an extension of linear regression with non‑linear predictor functions while preserving additivity, matching the reference."
+41,What is recursive binary splitting in decision trees?,"A top-down, greedy approach that repeatedly splits the predictor space at the cut point giving the greatest reduction in RSS (or impurity).",321 322 323,321 322 326 347,True,"Recursive binary splitting is the **top‑down, greedy procedure** used to grow a decision tree.  
+Starting with all training observations in a single region (the root), the algorithm repeatedly:
+
+1. **Considers every predictor \(X_j\) and every possible cut‑point \(s\)** for that predictor.  
+2. For each candidate split it forms the two half‑planes  
+   \[
+   R_1(j,s)=\{X\mid X_j < s\},\qquad 
+   R_2(j,s)=\{X\mid X_j \ge s\}
+   \]  
+   (p. 322).
+3. It evaluates the quality of the split by the reduction in the **residual sum of squares (RSS)** (for regression trees) or another impurity measure (e.g., Gini, entropy for classification). The split that yields the **largest decrease in RSS** (or impurity) is chosen (p. 322).  
+4. The selected split creates two new child nodes, and the process is applied recursively to each child node until a stopping rule is met (e.g., minimum node size, maximum depth).
+
+Because the algorithm always picks the best split **at the current step** without looking ahead, it is called **greedy**. Since it begins at the root and proceeds downward, it is **top‑down** (p. 321).  
+
+In summary, recursive binary splitting builds a decision tree by repeatedly partitioning the predictor space into two regions using the variable and cut‑point that most improve the fit, continuing this binary partitioning recursively until stopping criteria are satisfied. (p. 321‑322)",CORRECT,"The model answer accurately describes the top‑down greedy procedure that repeatedly splits the predictor space at the cut point giving the greatest reduction in RSS (or impurity), matching the reference."
+42,How is a decision tree pruned?,"Grow a large tree, then use cost complexity (weakest link) pruning with a tuning parameter alpha to get subtrees, choosing alpha by cross-validation.",323 324,326 330 342 349,False,"Decision‑tree pruning is the process of cutting back a fully grown tree to a smaller size that balances fit and complexity. In the text the authors illustrate two common ways this is done:
+
+* **Cross‑validation to choose the optimal number of terminal nodes.**  
+  Figure 8.5 (p. 326) shows the training, cross‑validation, and test mean‑squared errors as a function of tree size. The tree size with the lowest cross‑validation error (three terminal nodes in the example) is selected, and the corresponding pruned tree is displayed (Figure 8.1).
+
+* **Explicitly trimming the tree with a pruning function.**  
+  In the “Lab: Decision Trees” section (p. 342) the command `prune.misclass(tree.carseats, best=9)` is used to prune the original tree down to a nine‑node tree. The resulting smaller tree is plotted and its classification accuracy on a test set is evaluated (77 % correct). The authors note that increasing `best` (i.e., allowing a larger tree) can reduce accuracy, showing the trade‑off that pruning addresses (p. 342‑349).
+
+Thus, pruning a decision tree typically involves:
+
+1. **Growing a large (often over‑fitted) tree.**  
+2. **Using cross‑validation or a validation set to identify the tree size that minimizes prediction error.**  
+3. **Truncating the tree to that size—either by specifying the desired number of terminal nodes (e.g., `best=9`) or by selecting the size with the lowest cross‑validation error.**  
+
+The result is a more interpretable tree that often improves predictive performance. (See p. 326, p. 342‑349.)",INCORRECT,"it omits the core detail of using cost‑complexity (weakest‑link) pruning with a tuning parameter α, focusing only on cross‑validation for node count and a specific prune function."
+43,What is bagging?,"Bootstrap aggregation: fit a tree to each of B bootstrap samples and average the predictions (or majority vote), which reduces variance.",331 332,332 344,True,"Bagging (short for **bootstrap aggregating**) is a resampling‑based ensemble method.  
+The idea is to create many different training sets by repeatedly sampling **with replacement** from the original data (i.e., bootstrapping). A separate model is fitted on each bootstrapped data set, giving predictions \(\hat f^{*}_{b}(x)\) for the \(b\)‑th model. The final prediction is then obtained by **averaging** these individual predictions for regression  
+
+\[
+\hat f_{\text{bag}}(x)=\frac{1}{B}\sum_{b=1}^{B}\hat f^{*}_{b}(x),
+\]
+
+or by taking a **majority vote** among the predictions for classification. By aggregating many high‑variance, low‑bias models (such as deep, unpruned decision trees), bagging reduces the overall variance and often improves accuracy (p. 332).",CORRECT,"The answer accurately describes bagging as bootstrap aggregation, fitting models on bootstrap samples, averaging or voting, and notes variance reduction, matching the reference."
+44,How do random forests differ from bagging?,"At each split only a random subset of m predictors is considered (about the square root of p), which decorrelates the trees.",332 333 334,331 333 334 344,True,"Random forests are essentially a “decorrelated” version of bagging.  
+
+* **Bagging** builds each tree on a bootstrap sample of the data and, at every split, considers **all** \(p\) predictors as possible split candidates. In the `randomForest` implementation this is done by setting `mtry = p` (e.g., `mtry = 13` for the Boston data) so that the bagged model uses every predictor at each split【p. 344】.  
+
+* **Random forests** keep the bootstrap sampling of the data but add a second randomisation step: at each split they first draw a random subset of \(m\) predictors (usually \(m \approx \sqrt{p}\)) and allow the split to use only one of those \(m\) variables. This “random‑feature” selection decorrelates the individual trees and usually improves predictive performance【p. 334】.  
+
+Thus, the key difference is that random forests restrict the set of candidate variables at each split (a random subset of size \(m\)), whereas bagging uses the full set of predictors at every split. Both methods aggregate many trees, but the extra randomisation in random forests reduces the correlation among trees and often yields lower error.",CORRECT,"The model answer correctly states that random forests consider a random subset of predictors (≈√p) at each split, unlike bagging which uses all predictors, matching the reference."
+45,How does boosting work for decision trees?,"Trees are grown sequentially, each fit to the residuals of the current model rather than the outcome, and added with a shrinkage parameter so the model learns slowly.",335 336 337,336 337 338,True,"Boosting builds an ensemble of decision trees **sequentially** rather than all at once.  
+
+1. **Sequential fitting** – The first tree is fit to the original data.  
+2. **Fit to residuals** – For each subsequent tree, the algorithm computes the residuals (the difference between the current model’s predictions and the true response) and fits a new tree to those residuals instead of to the original outcome. This “learns slowly” by correcting the mistakes of the previous trees【p. 336】.  
+3. **Update the model** – The new tree is added to the existing fitted function (often after being multiplied by a small shrinkage factor λ) and the residuals are recomputed. This process repeats for a total of B trees【p. 336‑337】.  
+
+Because each tree is built using information from the trees already grown, the construction of a tree depends strongly on the earlier trees【p. 337】.  
+
+**Typical settings**  
+- **Number of trees (B)** – Chosen by cross‑validation; too many can over‑fit, though over‑fitting tends to appear slowly【p. 337】.  
+- **Shrinkage (λ)** – A small positive number (e.g., 0.01 or 0.001) that controls the learning rate; smaller λ may require many more trees【p. 337】.  
+- **Tree depth (d)** – Controls the complexity of each tree; often a single split (a “stump”, d = 1) works well, giving an additive model that is easy to interpret【p. 337‑338】.  
+
+In summary, boosting for decision trees repeatedly adds small trees that are fit to the current residuals, gradually improving the overall prediction while using shrinkage and a limited tree depth to keep the model from over‑fitting.",CORRECT,"The answer accurately describes sequential tree growth, fitting to residuals, and using shrinkage to learn slowly, matching the reference."
+46,What is the Gini index used for in classification trees?,A measure of node purity (total variance across classes); it is small when a node has mostly one class.,327 328 329,327 334 340,True,"The Gini index is employed as a **measure of node purity** in classification trees.  
+When a tree is grown, the Gini index ( \(G=\sum_{k=1}^{K}\hat p_{mk}(1-\hat p_{mk})\) ) quantifies how mixed the classes are within a node: a small value indicates that the node is dominated by a single class. Because it is more sensitive to impurity than the raw classification error rate, the Gini index (or the similar entropy measure) is typically used to **evaluate the quality of a candidate split** during tree construction (p. 327).  
+
+In addition, when many trees are combined (e.g., bagging or random forests), the total reduction in the Gini index contributed by splits on each predictor is summed across all trees to give a **variable‑importance score** for classification problems (p. 334).  
+
+So, in classification trees the Gini index is used to (1) assess node purity and guide split decisions, and (2) quantify predictor importance in ensemble methods.",CORRECT,"The model answer correctly states that the Gini index measures node purity and is small when a node is dominated by one class, matching the reference answer (extra details are acceptable)."
+47,What is the maximal margin classifier?,The separating hyperplane that is farthest from the training observations (largest margin); it depends only on the support vectors closest to it.,353 354 355 356,352 356 360 383,True,"The maximal‑margin classifier is a **linear classifier** that chooses, among all possible separating hyperplanes, the one that maximizes the **margin**—the smallest distance from any training observation to the hyperplane. In other words, it finds the “widest slab’’ that can be placed between the two classes and uses the mid‑line of that slab as the decision boundary.  
+
+Once the maximal‑margin hyperplane has been identified, a new observation \(x^{*}\) is classified by the sign of the linear function  
+
+\[
+f(x^{*}) = \beta_{0} + \beta_{1}x^{*}_{1} + \beta_{2}x^{*}_{2} + \dots + \beta_{p}x^{*}_{p},
+\]
+
+so that observations on one side of the hyperplane receive one class label and those on the other side receive the opposite label (p. 352, 356).  
+
+Figure 9.5 illustrates the maximal‑margin hyperplane as the line that lies exactly halfway between the two classes, giving the greatest possible minimal distance (margin) to the nearest points (p. 360).  
+
+Thus, the maximal‑margin classifier is the simple, intuitive classifier that seeks the linear boundary with the largest possible margin, assuming the classes are linearly separable.",CORRECT,"The answer correctly describes the maximal‑margin classifier as the separating hyperplane with the largest margin, i.e., the one farthest from the training points and determined by the nearest support vectors, and adds consistent extra detail."
+48,How does K-means clustering work?,"Randomly assign observations to K clusters, then repeatedly compute each cluster centroid and reassign each observation to the closest centroid until assignments stop changing; it finds a local optimum.",403 404 405,401 404 419,True,"K‑means clustering is an iterative algorithm that partitions a data set into a pre‑specified number \(K\) of non‑overlapping clusters.  The basic steps are:
+
+1. **Choose \(K\)** – the desired number of clusters (the user must supply this value)【p. 401】.  
+2. **Initial assignment** – each observation is randomly assigned to one of the \(K\) clusters (Step 1 in the algorithm)【p. 404】.  
+3. **Compute centroids** – for each cluster the mean (centroid) of the observations currently assigned to that cluster is calculated (Step 2a)【p. 404】.  
+4. **Re‑assign observations** – each observation is moved to the cluster whose centroid is nearest to it (Step 2b)【p. 404】.  
+5. **Iterate** – steps 2a and 2b are repeated until the cluster assignments no longer change (or the change in the objective function is below a threshold).  After each iteration the centroids are recomputed, and the process continues until convergence【p. 404】.  
+
+The algorithm seeks the clustering that minimizes the within‑cluster sum of squared distances (the objective function shown as equation 10.11 in the text).  Because the algorithm starts from a random initial configuration, it may converge to a local optimum; therefore it is common to run K‑means several times with different random starts and keep the solution with the smallest objective value【p. 404】.
+
+In summary, K‑means works by repeatedly (1) assigning points to the nearest cluster centroid and (2) updating each centroid to be the mean of its assigned points, until the assignments stabilize.  This yields a partition of the data into \(K\) clusters that (locally) minimizes the total within‑cluster variance.",CORRECT,"The model answer accurately describes random initialization, iterative centroid computation and reassignment until convergence, and notes it finds a local optimum, matching the reference."
+49,How does hierarchical clustering work?,"It builds a dendrogram bottom-up, starting with each observation as its own cluster and repeatedly fusing the two closest clusters; cutting the dendrogram picks the number of clusters.",406 407 408 409 410,405 409 410,True,"Hierarchical clustering builds a tree‑like (dendrogram) representation of the data by repeatedly merging the most similar groups of observations.
+
+1. **Start with individual points** – each observation is treated as its own cluster (the bottom of the dendrogram).  
+2. **Compute a pair‑wise dissimilarity** – usually Euclidean distance, although any distance measure can be used (p. 409).  
+3. **Iteratively fuse the two closest clusters** – at each step the algorithm finds the pair of clusters with the smallest dissimilarity and merges them, reducing the number of clusters from *n* to *n‑1*, then to *n‑2*, and so on (p. 409).  
+4. **Update distances according to a linkage rule** – the way distances between the new merged cluster and the remaining clusters are recomputed depends on the chosen linkage (single, complete, average, centroid, etc.).  For example, centroid linkage is common in genomics but can cause “inversions” where a merge occurs at a lower height than its components (p. 410).  
+5. **Continue until a single cluster remains** – the process stops when all observations are in one cluster, yielding a full dendrogram that can be cut at any height to obtain a desired number of clusters (p. 405‑409).
+
+This bottom‑up (agglomerative) approach is the most common form of hierarchical clustering and produces a nested set of clusters that can be visualized as a tree (p. 405).",CORRECT,"The model answer accurately describes the bottom‑up dendrogram construction and repeated merging of the closest clusters, matching the reference and adding consistent details."
+50,What is principal components analysis?,"A method that finds a low-dimensional representation: the first principal component is the direction of largest variance, and each later one is uncorrelated with earlier ones and captures the most remaining variance.",388 389 390 391,389 390 399,True,"Principal components analysis (PCA) is the procedure for computing principal components from a set of measured features \(X_{1},X_{2},\dots ,X_{p}\) and then using those components to understand and explore the data.  It is an **unsupervised** technique because it works only with the predictor variables and does not require any response variable \(Y\).  The resulting components can be used for data visualization, for summarizing a large, possibly correlated set of variables with a smaller set of derived variables, and as inputs to downstream supervised methods such as principal‑components regression (p. 390).",INCORRECT,the answer omits the core facts about PCA capturing the direction of largest variance and subsequent orthogonal components that capture remaining variance.
